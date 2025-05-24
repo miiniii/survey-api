@@ -1,0 +1,40 @@
+HELP.md
+# Java
+*.class
+*.jar
+*.war
+*.ear
+
+# Logs
+*.log
+logs/
+
+# IDE
+.idea/
+*.iml
+*.ipr
+*.iws
+*.classpath
+*.project
+*.settings/
+
+# OS
+.DS_Store
+
+# Build
+/target/
+/out/
+
+# Gradle
+.gradle/
+build/
+
+# Maven
+.mvn/
+!mvnw
+!mvnw.cmd
+
+# Environment
+.env
+application-*.yml
+application-*.properties
