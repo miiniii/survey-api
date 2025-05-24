@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+// todo: Swagger 형태로 API 문서를 넣어보세요.
 @RestController
 @RequestMapping("/api/survey")
 @RequiredArgsConstructor

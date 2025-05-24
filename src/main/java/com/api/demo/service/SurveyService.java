@@ -7,6 +7,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -18,15 +20,15 @@ public class SurveyService {
 
     public SurveyResponseMain getSurveyByCompanyId(Long companyId) {
 
-        final List<SurveyDto> surveyWith = surveyRepository.findSurveyWith(companyId);
+        final List<SurveyDto> surveyList = surveyRepository.findSurveyWith(companyId);
         // todo: SurveyResponseMain 로 만들어주기.
         SurveyResponseMain data = new SurveyResponseMain();
-        data.setCompany(surveyWith.get(0).getCompanyName());
+        data.setCompany(surveyList.get(0).getCompanyName());    // todo: surveyList가 비어있으면, NPE 가 나서 개선이 필요합니다.
 
         Map<String, CategoryDto> categoryMap = new LinkedHashMap<>();
 
-        for (SurveyDto dto : surveyWith) {
-            String categoryName = dto.getCategoryName();
+        for (SurveyDto survey : surveyList) {
+            String categoryName = survey.getCategoryName();
 
             CategoryDto category = categoryMap.computeIfAbsent(categoryName, name -> {
                 CategoryDto c = new CategoryDto();
@@ -36,18 +38,17 @@ public class SurveyService {
             });
 
             QuestionDto question = new QuestionDto();
-            question.setId("q" + dto.getId());
-            question.setType(dto.getType().name().toLowerCase());
-            question.setTitle(dto.getTitle());
-            question.setSubtitle(dto.getSubtitle());
-            question.setMax(dto.getMax());
-            question.setRequired(dto.isRequired());
+            question.setId("q" + survey.getId());
+            question.setType(survey.getType().name().toLowerCase());
+            question.setTitle(survey.getTitle());
+            question.setSubtitle(survey.getSubtitle());
+            question.setMax(survey.getMax());
+            question.setRequired(survey.isRequired());
+            question.setOptions(Collections.emptyList());   // default 로 빈 리스트 할당.
 
             // 옵션은 콤마(,)로 구분된 문자열이라 가정
-            if (dto.getOptions() != null && !dto.getOptions().isEmpty()) {
-                question.setOptions(List.of(dto.getOptions().split(",")));
-            } else {
-                question.setOptions(Collections.emptyList());
+            if (survey.getOptions() != null && !survey.getOptions().isEmpty()) {
+                question.setOptions(List.of(survey.getOptions().split(",")));
             }
 
             category.getQuestions().add(question);
@@ -61,6 +62,7 @@ public class SurveyService {
     public void saveSurveyResult(SurveySubmitRequest request) {
         MemberDto memberDto = request.getMember();
 
+        // todo 회원의 중복가입을 피하기 위한 방어로직이 필요합니다.
         Member member = new Member();
         member.setName(memberDto.getName());
         member.setEmail(memberDto.getEmail());
@@ -69,16 +71,29 @@ public class SurveyService {
 
         memberRepository.save(member);
 
+        List<Long> surveyIds = request.getResponses().stream()
+                .map(SurveyAnswerDto::getSurveyId)
+                .collect(Collectors.toList());
+
+        List<Survey> surveys = surveyRepository.findAllById(surveyIds);
+
+        Map<Long, Survey> surveyMap = surveys.stream()
+                .collect(Collectors.toMap(Survey::getId, Function.identity()));
+
+        List<SurveyResult> results = new ArrayList<>();
         for (SurveyAnswerDto answer : request.getResponses()) {
-            Survey survey = surveyRepository.findById(answer.getSurveyId())
-                    .orElseThrow(() -> new IllegalArgumentException("해당 설문이 존재하지 않습니다."));
+            Survey survey = surveyMap.get(answer.getSurveyId());
+            if (survey == null) {
+                throw new IllegalArgumentException("해당 설문이 존재하지 않습니다.");
+            }
             SurveyResult result = new SurveyResult();
             result.setMember(member);
             result.setSurvey(survey);
             result.setAnswerText(answer.getAnswerText());
-
-            surveyResultRepository.save(result);
+            results.add(result);
         }
+
+        surveyResultRepository.saveAll(results);
     }
 
 
