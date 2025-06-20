@@ -71,6 +71,37 @@ VALUES
     ('Ian Seo', 'ian.seo@example.com', 'MALE', '30-39'),
     ('Jisoo Lim', 'jisoo.lim@example.com', 'FEMALE', '20-29');
 
+-- 회원 정보 (member)도 있다고 가정하고, member_id는 1~5번 사용
+
+-- survey_result 다중 INSERT 예제
+
+INSERT INTO survey_result (member_id, survey_id, answer_text) VALUES
+(1, 1, '매우 그렇다'),
+(2, 1, '그렇다'),
+(3, 1, '보통이다'),
+
+(1, 2, '회사 홈페이지, 링크드인'),
+(2, 2, '취업 포털(사람인, 잡코리아 등)'),
+(3, 2, '페이스북'),
+
+(1, 3, '4'),
+(2, 3, '5'),
+(3, 3, '3'),
+(4, 3, '4'),
+(5, 3, '2'),
+
+(1, 4, '서류 전형 과정에서 대기 시간이 너무 길었습니다.'),
+(2, 4, '과정을 좀 더 명확히 안내해주었으면 좋겠습니다.'),
+
+(1, 5, '매우 좋았다'),
+(2, 5, '좋았다'),
+
+(1, 6, '혁신적인, 글로벌한'),
+(2, 6, '체계적인, 역동적인');
+
+
+
+
 
 select
     (select name from company where id = survey.company_id) as company_name,
@@ -78,3 +109,6 @@ select
     (select sort_order from category where id = survey.category_id) as sort_order,
     survey.*
 from survey where company_id = :companyId;
+
+
+

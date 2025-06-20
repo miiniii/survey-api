@@ -43,6 +43,9 @@ CREATE TABLE survey (
                              updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 
+ALTER TABLE survey MODIFY COLUMN type ENUM('RADIO', 'CHECKBOX', 'RATING', 'TEXTAREA') NOT NULL;
+UPDATE survey SET type = UPPER(type) WHERE type IN ('radio', 'checkbox');
+
 SELECT * from survey;
 
 CREATE TABLE member (
