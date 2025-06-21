@@ -72,6 +72,21 @@ CREATE TABLE survey_result (
 SELECT * from survey_result;
 
 
+CREATE TABLE user_activity_log (
+                                   id BIGINT AUTO_INCREMENT PRIMARY KEY,
+                                   member_id BIGINT,
+                                   http_method VARCHAR(10),
+                                   request_url VARCHAR(1000),
+                                   request_body TEXT,
+                                   response_code INT,
+                                   response_body TEXT,
+                                   execution_time_ms BIGINT,
+                                   created_at DATETIME
+);
+
+SELECT * from user_activity_log;
+
+
 
 
 

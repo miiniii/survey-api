@@ -4,6 +4,8 @@ package com.api.demo.controller;
 import com.api.demo.dto.SurveyResponseMain;
 import com.api.demo.dto.SurveyStatisticsResponse;
 import com.api.demo.dto.SurveySubmitRequest;
+import com.api.demo.entity.Member;
+import com.api.demo.repository.MemberRepository;
 import com.api.demo.repository.SurveyResultRepository;
 import com.api.demo.service.SurveyService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -32,8 +34,15 @@ public class SurveyController {
     @Operation(summary = "설문 목록 제출")
     @PostMapping
     public ResponseEntity<String> submitSurvey(@RequestBody SurveySubmitRequest request) {
-        log.info("[POST] 설문 제출 요청 - request: {}", request);
+
         surveyService.saveSurveyResult(request);
+
+        // 저장 이후 DB에서 id가 생성된 member 조회
+        Member member = surveyService.findMemberByEmail(request.getMember().getEmail());
+
+        log.info("[POST] 설문 제출 요청 - memberId: {}, name: {}, email: {}",
+                member.getId(), member.getName(), member.getEmail());
+
         return ResponseEntity.ok("설문조사 결과가 저장되었습니다.");
     }
 
@@ -45,4 +54,7 @@ public class SurveyController {
         return ResponseEntity.ok(statistics);
     }
 
+
 }
+
+

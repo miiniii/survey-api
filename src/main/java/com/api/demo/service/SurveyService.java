@@ -8,11 +8,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
-
-import static com.api.demo.entity.enums.QuestionType.TEXTAREA;
 
 @Service
 @RequiredArgsConstructor
@@ -70,18 +69,19 @@ public class SurveyService {
     public void saveSurveyResult(SurveySubmitRequest request) {
         MemberDto memberDto = request.getMember();
 
-        Member member;
-        if (memberDto.getId() != null) {
-            member = memberRepository.findById(memberDto.getId())
-                    .orElseThrow(() -> new IllegalArgumentException("회원 정보가 존재하지 않습니다. id = " + memberDto.getId()));
-        }
+        //이메일로 중복확인
+        Optional<Member> optionalMember = memberRepository.findByEmail(memberDto.getEmail());
 
-        // todo 회원의 중복가입을 피하기 위한 방어로직이 필요합니다.
-        member = new Member();
-        member.setName(memberDto.getName());
-        member.setEmail(memberDto.getEmail());
-        member.setGender(memberDto.getGender());
-        member.setAgeRange(memberDto.getAgeRange());
+        Member member = optionalMember.orElseGet(() -> {
+            Member newMember = new Member();
+            newMember.setName(memberDto.getName());
+            newMember.setEmail(memberDto.getEmail());
+            newMember.setGender(memberDto.getGender());
+            newMember.setAgeRange(memberDto.getAgeRange());
+            newMember.setCreatedAt(LocalDateTime.now());
+            newMember.setUpdatedAt(LocalDateTime.now());
+            return memberRepository.save(newMember); // 없을 경우만 저장
+        });
 
         memberRepository.save(member);
 
@@ -160,4 +160,10 @@ public class SurveyService {
                 optionCounts.isEmpty() ? null : optionCounts, averageRating
         );
     }
+
+    public Member findMemberByEmail(String email) {
+        return memberRepository.findByEmail(email)
+                .orElseThrow(() -> new IllegalArgumentException("해당 이메일의 회원이 없습니다."));
+    }
+
 }
