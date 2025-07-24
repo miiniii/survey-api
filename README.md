@@ -16,10 +16,11 @@ Spring Boot 기반의 설문 관리 서비스입니다.
 - Java 17
 - Spring Boot 3.4.5
 - Spring Data JPA
-- H2 / MySQL
+- Spring Security 
+- MySQL
 - Thymeleaf
 - Lombok
 - Gradle
-- WebClient
+- Swagger
 
 ## ERD
