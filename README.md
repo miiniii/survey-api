@@ -24,3 +24,4 @@ Spring Boot 기반의 설문 관리 서비스입니다.
 - Swagger
 
 ## DB ERD
+<img width="3364" height="2756" alt="image" src="https://github.com/user-attachments/assets/f50b210b-28ec-4ba8-a663-5676f5b5df4e" />
