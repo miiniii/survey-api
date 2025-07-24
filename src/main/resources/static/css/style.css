@@ -1,0 +1,23 @@
+.pastel-primary {
+    background-color: #7FB3D5;  /* 차분한 블루 */
+    color: #fff;
+}
+.pastel-success {
+    background-color: #A9DFBF;  /* 🌿 톤다운된 초록 (Soft Olive) */
+    color: #000;
+}
+.pastel-yellow {
+    background-color: #F9E79F;  /* 머스터드 */
+    color: #000;
+}
+.pastel-danger {
+    background-color: #F5B7B1;  /* 연한 코랄핑크 */
+    color: #000;
+}
+.btn:hover {
+    filter: brightness(95%);
+}
+input[readonly] {
+    background-color: #f8f9fa !important;
+    color: #495057;
+}

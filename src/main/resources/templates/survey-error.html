@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>설문 오류</title>
+  <script th:inline="javascript">
+    /*<![CDATA[*/
+    const errorMsg = [[${errorMessage}]];
+    alert(errorMsg);          // 에러 메시지 alert
+    window.history.back();    // 이전 페이지로 이동
+    /*]]>*/
+  </script>
+</head>
+<body>
+</body>
+</html>

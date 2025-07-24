@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>설문 참여</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/css/style.css" rel="stylesheet">
+    <style>
+        .no-wrap-label {
+            white-space: nowrap;
+        }
+    </style>
+</head>
+<body class="bg-light">
+<div class="container mt-5">
+    <div class="card shadow p-4" style="max-width: 800px; margin: auto;">
+        <h4 class="mb-4" th:text="'회사: ' + (${surveyData.company} ?: '이름 없음') + ' 설문 참여'"></h4>
+
+        <form th:action="@{/survey/submit}" method="post">
+            <!-- 사용자 정보 -->
+            <div class="mb-3">
+                <label for="name" class="form-label">이름 <span class="text-danger">*</span></label>
+                <input type="text" id="name" name="memberDto.name" class="form-control"
+                       th:value="${memberName}" readonly required>
+            </div>
+
+            <input type="hidden" name="memberDto.password" value="{noop}survey123" />
+
+            <div class="mb-4">
+                <label for="email" class="form-label">이메일 <span class="text-danger">*</span></label>
+                <input type="email" id="email" name="memberDto.email" class="form-control"
+                       th:value="${memberEmail}" readonly required>
+            </div>
+
+            <!-- 설문 질문 -->
+            <div th:each="category : ${surveyData.categories}">
+                <h5 class="mt-4 mb-3 border-bottom pb-1" th:text="${category.name}">카테고리명</h5>
+
+                <div th:each="q, iStat : ${category.questions}" class="mb-4">
+                    <input type="hidden" th:name="'responses[' + ${iStat.index} + '].surveyId'"
+                           th:value="${q.id.substring(1)}" />
+
+                    <label class="form-label">
+                        <strong th:text="${q.title}">질문 제목</strong><br/>
+                        <small class="text-muted" th:text="${q.subtitle}">질문 설명</small>
+                    </label>
+
+                    <!-- 라디오 -->
+                    <div th:if="${q.type == 'radio'}">
+                        <div th:each="opt : ${q.options}" class="form-check">
+                            <input class="form-check-input"
+                                   type="radio"
+                                   th:name="'responses[' + ${iStat.index} + '].answerText'"
+                                   th:value="${opt}"
+                                   th:id="'radio-' + ${iStat.index} + '-' + ${opt.hashCode()}">
+                            <label class="form-check-label no-wrap-label"
+                                   th:for="'radio-' + ${iStat.index} + '-' + ${opt.hashCode()}"
+                                   th:text="${opt}"></label>
+                        </div>
+                    </div>
+
+                    <!-- 체크박스 -->
+                    <div th:if="${q.type == 'checkbox'}">
+                        <div th:each="opt, optStat : ${q.options}" class="form-check">
+                            <input class="form-check-input"
+                                   type="checkbox"
+                                   th:name="'responses[' + ${iStat.index} + '].answerTextList'"
+                                   th:value="${opt}"
+                                   th:id="'checkbox-' + ${iStat.index} + '-' + ${optStat.index}">
+                            <label class="form-check-label no-wrap-label"
+                                   th:for="'checkbox-' + ${iStat.index} + '-' + ${optStat.index}"
+                                   th:text="${opt}"></label>
+                        </div>
+                    </div>
+
+                    <!-- 점수 선택 -->
+                    <div th:if="${q.type == 'rating'}">
+                        <select class="form-select"
+                                th:name="'responses[' + ${iStat.index} + '].answerText'">
+                            <option value="">선택</option>
+                            <option th:each="i : ${#numbers.sequence(1, q.max)}"
+                                    th:value="${i}" th:text="${i + '점'}"></option>
+                        </select>
+                    </div>
+
+                    <!-- 텍스트 응답 -->
+                    <div th:if="${q.type == 'textarea'}">
+                        <textarea class="form-control"
+                                  rows="3"
+                                  th:name="'responses[' + ${iStat.index} + '].answerText'"></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <button type="submit" class="btn pastel-primary w-100 mt-4">제출하기</button>
+        </form>
+    </div>
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const maxChecked = 3;
+
+        // 질문별 체크박스 그룹별로 제한
+        const checkboxGroups = {};
+
+        document.querySelectorAll('.form-check-input[type="checkbox"]').forEach(checkbox => {
+            const name = checkbox.name;
+            if (!checkboxGroups[name]) {
+                checkboxGroups[name] = [];
+            }
+            checkboxGroups[name].push(checkbox);
+
+            checkbox.addEventListener('change', function () {
+                const group = checkboxGroups[name];
+                const checkedCount = group.filter(cb => cb.checked).length;
+
+                if (checkedCount > maxChecked) {
+                    this.checked = false;
+                    alert("최대 3개까지만 선택할 수 있습니다.");
+                }
+            });
+        });
+    });
+</script>
+</body>
+</html>
