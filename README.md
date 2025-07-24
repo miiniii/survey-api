@@ -23,4 +23,4 @@ Spring Boot 기반의 설문 관리 서비스입니다.
 - Gradle
 - Swagger
 
-## ERD
+## DB ERD
