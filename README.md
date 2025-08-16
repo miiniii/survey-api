@@ -38,7 +38,7 @@ Spring Boot 기반의 설문 관리 서비스입니다.
 ## Cache Server가 다운됐을때
 환경: Redis 존재(정상 동작 기준)
 1차 API 요청 (Cold/MISS)
-₩₩₩
+```json
 {
   "cache": "companySurveys",
   "companyId": 1,
@@ -47,9 +47,9 @@ Spring Boot 기반의 설문 관리 서비스입니다.
   "durationMs": 435,
   "categoryCount": 4
 }
-₩₩₩
+```
 
-₩₩₩
+```json
 2차 API 요청 (Warm/HIT)
 {
     "cache": "companySurveys",
@@ -59,6 +59,8 @@ Spring Boot 기반의 설문 관리 서비스입니다.
     "durationMs": 4,
     "categoryCount": 4
 }
-₩₩₩
+```
+| 성능 비교 |
+|---|
+| 콜드 435ms → 웜 4ms (**99.08% 감소, ~108.8× 빠름**) |
 
-duration -> 약 99% 감소
