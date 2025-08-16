@@ -36,7 +36,7 @@ Spring Boot 기반의 설문 관리 서비스입니다.
 <img width="3364" height="2756" alt="image" src="https://github.com/user-attachments/assets/f50b210b-28ec-4ba8-a663-5676f5b5df4e" />
 
 ## Cache Server가 다운됐을때
-환경: Redis 존재(정상 동작 기준)
+1) Redis 존재(정상 동작 기준)
 
 1차 API 요청 (Cold/MISS)
 ```json
@@ -65,5 +65,6 @@ Spring Boot 기반의 설문 관리 서비스입니다.
 |---|
 | 콜드 435ms → 웜 4ms (**약99.08% 감소, ~108.8× 빠름**) |
 
+2) Redis 중지 상태
 
 
