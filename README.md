@@ -34,3 +34,31 @@ Spring Boot 기반의 설문 관리 서비스입니다.
 
 ## DB ERD
 <img width="3364" height="2756" alt="image" src="https://github.com/user-attachments/assets/f50b210b-28ec-4ba8-a663-5676f5b5df4e" />
+
+## Cache Server가 다운됐을때
+환경: Redis 존재(정상 동작 기준)
+1차 API 요청 (Cold/MISS)
+₩₩₩
+{
+  "cache": "companySurveys",
+  "companyId": 1,
+  "outcome": "MISS",
+  "methodExecuted": true,
+  "durationMs": 435,
+  "categoryCount": 4
+}
+₩₩₩
+
+₩₩₩
+2차 API 요청 (Warm/HIT)
+{
+    "cache": "companySurveys",
+    "companyId": 1,
+    "outcome": "HIT",
+    "methodExecuted": false,
+    "durationMs": 4,
+    "categoryCount": 4
+}
+₩₩₩
+
+duration -> 약 99% 감소
