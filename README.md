@@ -66,5 +66,13 @@ Spring Boot 기반의 설문 관리 서비스입니다.
 | 콜드 435ms → 웜 4ms (**약99.08% 감소, ~108.8× 빠름**) |
 
 2) Redis 중지 상태
-
+```json
+{
+    "code": "internal_server_error",
+    "message": "Redis command timed out"
+}
+```
+|장애 결과 (Redis OFF)|
+|---|
+| **상태:** 실패(500) · **이유:** 캐시 조회 단계 예외 전파(타임아웃/연결거부)|
 
