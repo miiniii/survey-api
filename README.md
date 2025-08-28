@@ -55,7 +55,6 @@ Spring Boot 기반의 설문 관리 서비스입니다.
 2차 API 요청 (Warm/HIT)
 ```json
 {
-  ...
   "cacheInfo": {
     "cache": "companySurveys",
     "companyId": 1,
@@ -95,6 +94,7 @@ Spring Boot 기반의 설문 관리 서비스입니다.
     }
 }
 ```
+
 
 
 
