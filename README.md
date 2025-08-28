@@ -41,12 +41,14 @@ Spring Boot 기반의 설문 관리 서비스입니다.
 1차 API 요청 (Cold/MISS)
 ```json
 {
-  "cache": "companySurveys",
-  "companyId": 1,
-  "outcome": "MISS",
-  "methodExecuted": true,
-  "durationMs": 435,
-  "categoryCount": 4
+    "cacheInfo": {
+      "cache": "companySurveys",
+      "companyId": 1,
+      "outcome": "MISS",
+      "methodExecuted": true,
+      "durationMs": 435,
+      "categoryCount": 4
+  }
 }
 ```
 
@@ -82,7 +84,6 @@ Spring Boot 기반의 설문 관리 서비스입니다.
 3) Redis 중지 + fail-open 적용
 ```json
 {
-    ...
     "cacheInfo": {
         "cache": "companySurveys",
         "outcome": "FAIL_OPEN",
@@ -94,6 +95,7 @@ Spring Boot 기반의 설문 관리 서비스입니다.
     }
 }
 ```
+
 
 
 
