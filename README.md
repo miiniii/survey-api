@@ -95,6 +95,9 @@ Spring Boot 기반의 설문 관리 서비스입니다.
 }
 ```
 
+4) Redis 중지 + 2-level + fail-open 적용
+
+
 
 
 
