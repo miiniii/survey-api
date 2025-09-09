@@ -35,8 +35,12 @@ Spring Boot 기반의 설문 관리 서비스입니다.
 ## DB ERD
 <img width="3364" height="2756" alt="image" src="https://github.com/user-attachments/assets/f50b210b-28ec-4ba8-a663-5676f5b5df4e" />
 
-## Cache Server가 다운됐을때
-1) Redis 존재(정상 동작 기준)
+## 장애 대비 캐시 전략 실험
+- 문제 : Redis 캐시 서버 장애 시 API가 500(타임아웃/연결거부)로 실패
+- 목표 : Redis 장애 상황에서도 정상 응답(200) 유지
+
+
+1) 기준(Baseline) - Redis ON
 
 1차 API 요청 (Cold/MISS)
 ```json
@@ -96,6 +100,7 @@ Spring Boot 기반의 설문 관리 서비스입니다.
 ```
 
 4) Redis 중지 + 2-level + fail-open 적용
+
 
 
 
