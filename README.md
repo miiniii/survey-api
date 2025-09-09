@@ -55,12 +55,9 @@ Spring Boot 기반의 설문 관리 서비스입니다.
 | ④ 한도 도달 | 623,566 | 100.00MB | 76,436 | **LRU 퇴출 시작** |
 
 <p align="center">
-  <img src="<img width="1050" height="1074" alt="image" src="https://github.com/user-attachments/assets/8d888265-4d93-4344-9ffe-3004234c8fa7" />
-" width="45%"/>
-  <img src="<img width="1911" height="383" alt="image" src="https://github.com/user-attachments/assets/7aa5a83c-62a2-42e1-991f-0ae3e5bd0714" />
-" width="45%"/>
+  <img src="<img width="1050" height="1074" alt="image" src="https://github.com/user-attachments/assets/8d888265-4d93-4344-9ffe-3004234c8fa7" />" width="45%"/>
+  <img src="<img width="1911" height="383" alt="image" src="https://github.com/user-attachments/assets/7aa5a83c-62a2-42e1-991f-0ae3e5bd0714" />" width="45%"/>
 </p>
-
 <p align="center">
   <em>왼쪽: String(JSON) 저장 / 오른쪽: Hash(Map) 저장</em>
 </p>
@@ -157,6 +154,7 @@ Spring Boot 기반의 설문 관리 서비스입니다.
 ### 결과 - 2-Level + fail-open 적용
 - 이번 트래픽 패턴에서는 성능 차이가 두드러지지 않았지만, 2-Level은 장애 상황에서 반복 조회를 흡수해 응답을 안정적으로 유지하는 안전망 역할을 했다.
   따라서 조회가 많고 변경이 드문 API에는 2-Level을 선택적으로 적용하고, 최신성이 중요한 API는 Fail-open 단독으로 운영하는 것이 적절하다.
+
 
 
 
