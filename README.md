@@ -42,7 +42,7 @@ Spring Boot 기반의 설문 관리 서비스입니다.
 
 1) 기준(Baseline) - Redis ON
 
-1차 API 요청 (Cold/MISS)
+1차 API 요청 (Cold/MISS) -> DB 조회
 ```json
 {
     "cacheInfo": {
@@ -56,7 +56,7 @@ Spring Boot 기반의 설문 관리 서비스입니다.
 }
 ```
 
-2차 API 요청 (Warm/HIT)
+2차 API 요청 (Warm/HIT) -> 캐시 조회
 ```json
 {
   "cacheInfo": {
@@ -73,7 +73,7 @@ Spring Boot 기반의 설문 관리 서비스입니다.
 |---|
 | 콜드 435ms → 웜 4ms (**약99.08% 감소, ~108.8× 빠름**) |
 
-2) Redis 중지 상태
+2) 장애 재현 - Redis OFF(Fail-open 미적용)
 ```json
 {
     "code": "internal_server_error",
@@ -85,6 +85,7 @@ Spring Boot 기반의 설문 관리 서비스입니다.
 | **상태:** 실패(500) · **이유:** 캐시 조회 단계 예외 전파(타임아웃/연결거부)|
 
 3) Redis 중지 + fail-open 적용
+- 동작 방식 : Redis에 문제가 생기면 캐시를 쓰지 않고 바로 DB에서 데이터를 가져옴 -> 에러 대신 정상 응답으로 반환
 ```json
 {
     "cacheInfo": {
@@ -98,10 +99,17 @@ Spring Boot 기반의 설문 관리 서비스입니다.
     }
 }
 ```
+|요약|
+|---|
+| API가 죽지 않고 **정상 동작**(200 응답 유지)|
+
 
 4) Redis 중지 + 2-level + fail-open 적용
+- 동작 방식 : L1(로컬 캐시) → L2(Redis) 순으로 조회하다 Redis에 문제가 생기면 DB에서 데이터를 가져오고, 가져온 값을 L1에 저장해 반복 요청을 막음.
 
-
+|장점 | 단점|
+|---|
+|L1이 반복 요청을 흡수해 DB 폭주 방지, 평소엔 L1/L2를 활용해 응답 속도와 분산 효율 극대화 |L1은 서버별 캐시라 데이터 최신성이 Redis보다 늦을 수 있음, TTL 관리나 무효화 전략 필요 |
 
 
 
