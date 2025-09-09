@@ -42,6 +42,37 @@ Spring Boot 기반의 설문 관리 서비스입니다.
 1)Hash vs String 저장 구조의 메모리 효율 비교
 2)100MB 환경에서 안전하게 저장 가능한 키 수와 퇴출 임계치 확인
 
+### 저장 구조 (String vs Hash)
+- **String(JSON)**: DTO 전체를 직렬화해 저장 → 단순/편리하지만 **부분 갱신/부분 조회에 불리**
+- **Hash(Map)**: 필드 단위 저장(HSET/HGETALL) → **카운터/부분 갱신 유리**, Medis에서 **테이블 형태**로 확인 가능
+
+1) Hash 구조
+| 단계 | 누적 키 수(DBSIZE) | used_memory_human | evicted_keys | 비고 |
+|------|------------------:|------------------:|-------------:|------|
+| ① 초기 | 10,000 | ~3.10MB | 0 | 초기 주입 |
+| ② 정상 구간 | 300,000 | ~49.10MB | 0 | 안정 구간 |
+| ③ 임계 직전 | ~540,000 | ~95MB | 0 | 80~95% 구간, 모니터링 필요 |
+| ④ 한도 도달 | 623,566 | 100.00MB | 76,436 | **LRU 퇴출 시작** |
+
+<p align="center">
+  <img src="<img width="1050" height="1074" alt="image" src="https://github.com/user-attachments/assets/8d888265-4d93-4344-9ffe-3004234c8fa7" />
+" width="45%"/>
+  <img src="<img width="1911" height="383" alt="image" src="https://github.com/user-attachments/assets/7aa5a83c-62a2-42e1-991f-0ae3e5bd0714" />
+" width="45%"/>
+</p>
+
+<p align="center">
+  <em>왼쪽: String(JSON) 저장 / 오른쪽: Hash(Map) 저장</em>
+</p>
+
+   
+2) String 구조
+| 단계 | 누적 키 수(DBSIZE) | used_memory_human | evicted_keys | 비고 |
+|------|------------------:|------------------:|-------------:|------|
+| ① 초기 | 50,000 | 12.30MB | 0 | 초기 주입 |
+| ② 정상 구간 | 300,000 | 70.73MB | 0 | 안정 구간 |
+| ③ 임계 직전 | 410,000 | 95.09MB | 0 | 알람 대상 |
+| ④ 한도 도달 | 431,580 | 100.00MB | 18,420 | **LRU 퇴출 시작** |
 
 
 
@@ -126,6 +157,7 @@ Spring Boot 기반의 설문 관리 서비스입니다.
 ### 결과 - 2-Level + fail-open 적용
 - 이번 트래픽 패턴에서는 성능 차이가 두드러지지 않았지만, 2-Level은 장애 상황에서 반복 조회를 흡수해 응답을 안정적으로 유지하는 안전망 역할을 했다.
   따라서 조회가 많고 변경이 드문 API에는 2-Level을 선택적으로 적용하고, 최신성이 중요한 API는 Fail-open 단독으로 운영하는 것이 적절하다.
+
 
 
 
