@@ -13,6 +13,8 @@ Spring Boot 기반의 설문 관리 서비스입니다.
 - **설문 결과 확인**
   - 본인 응답 확인 기능
   - 통계 정보(선택지별 응답 수 등) 제공
+<img width="1430" height="1106" alt="image" src="https://github.com/user-attachments/assets/72b1fa2b-1f9c-4d4a-8433-7f1eab6b3bba" />
+
 
 ### ✅ 관리자 측
 - **설문 통계 조회**
@@ -212,6 +214,7 @@ Spring Boot 기반의 설문 관리 서비스입니다.
 ### 결과 - 2-Level + fail-open 적용
 - 이번 트래픽 패턴에서는 성능 차이가 두드러지지 않았지만, 2-Level은 장애 상황에서 반복 조회를 흡수해 응답을 안정적으로 유지하는 안전망 역할을 했다.
   따라서 조회가 많고 변경이 드문 API에는 2-Level을 선택적으로 적용하고, 최신성이 중요한 API는 Fail-open 단독으로 운영하는 것이 적절하다.
+
 
 
 
