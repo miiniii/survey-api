@@ -39,6 +39,15 @@ Spring Boot 기반의 설문 관리 서비스입니다.
 ## DB ERD
 <img width="3364" height="2756" alt="image" src="https://github.com/user-attachments/assets/f50b210b-28ec-4ba8-a663-5676f5b5df4e" />
 
+## 자동 배포 한거 > deploy-server
+
+## 도메인 & DNS 연동
+- 도메인 : mysruvey.fun(구매처:Hostinger)
+- DNS 관리 : AWS Route53(Hostinger의 Nameserver를 Route53으로 교체)
+- 목적 : api.myservey.fun -> API 서버(EC2)라우팅, HTTPS 적용
+  >> 이때 뭔가 HTTPS로 바꾼거 같은데..
+
+
 
 ## Redis 용량 실험
 - 문제 : 회사 수 증가에 따라 캐시 키가 기하급수적으로 늘어나면, Redis 메모리 한도 초과 시 키 퇴출(eviction) 발생
@@ -214,6 +223,7 @@ Spring Boot 기반의 설문 관리 서비스입니다.
 ### 결과 - 2-Level + fail-open 적용
 - 이번 트래픽 패턴에서는 성능 차이가 두드러지지 않았지만, 2-Level은 장애 상황에서 반복 조회를 흡수해 응답을 안정적으로 유지하는 안전망 역할을 했다.
   따라서 조회가 많고 변경이 드문 API에는 2-Level을 선택적으로 적용하고, 최신성이 중요한 API는 Fail-open 단독으로 운영하는 것이 적절하다.
+
 
 
 
