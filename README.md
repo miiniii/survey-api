@@ -39,7 +39,26 @@ Spring Boot 기반의 설문 관리 서비스입니다.
 ## DB ERD
 <img width="3364" height="2756" alt="image" src="https://github.com/user-attachments/assets/f50b210b-28ec-4ba8-a663-5676f5b5df4e" />
 
-## 자동 배포 한거 > deploy-server
+## 배포 자동화
+- 로컬에서 빌드한 JAR를 EC2로 전송 후 재기동까지 한 번에 수행
+- 배포 스크립트
+```
+echo "빌드시작~ 디렉토리 이동"
+cd 파일경로
+
+echo "빌드시작~"
+gradle build -x test
+
+echo "빌드 결과를 /tmp로 copy"
+cp build/libs/jar 파일 /tmp
+
+echo "scp로 업로드"
+scp -i xxx.pem /tmp/xx.jar ubuntu@대상ip:ec2내 대상 경로
+
+ssh -i xxx.pem ubuntu@대상ip 'cd ec2내 대상 경로 && bash restart.sh'
+ssh -i xxx.pem ubuntu@대상ip 'cd ec2내 대상 경로 && docker-compose logs -f'
+```
+- 기존에는 3~5분 소요됐지만 배포 자동화 후 1분 미만으로 걸려 배포 속도가 약 4배 향상
 
 ## 도메인 & DNS 연동
 - 도메인 : mysruvey.fun(구매처:Hostinger)
@@ -223,6 +242,7 @@ Spring Boot 기반의 설문 관리 서비스입니다.
 ### 결과 - 2-Level + fail-open 적용
 - 이번 트래픽 패턴에서는 성능 차이가 두드러지지 않았지만, 2-Level은 장애 상황에서 반복 조회를 흡수해 응답을 안정적으로 유지하는 안전망 역할을 했다.
   따라서 조회가 많고 변경이 드문 API에는 2-Level을 선택적으로 적용하고, 최신성이 중요한 API는 Fail-open 단독으로 운영하는 것이 적절하다.
+
 
 
 
