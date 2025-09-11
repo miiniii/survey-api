@@ -20,6 +20,8 @@ Spring Boot 기반의 설문 관리 서비스입니다.
 - **회원 및 활동 관리**
   - 회원 정보 관리 (이름, 이메일 등)
   - 유저 활동 로그 기록 (요청 URL, 응답 코드, 처리 시간 등)
+  <img width="1596" height="1170" alt="image" src="https://github.com/user-attachments/assets/5b0af6fb-1d73-4805-a839-db3f4c45d056" />
+
   
 ## 기술 스택
 - Java 17
@@ -210,6 +212,7 @@ Spring Boot 기반의 설문 관리 서비스입니다.
 ### 결과 - 2-Level + fail-open 적용
 - 이번 트래픽 패턴에서는 성능 차이가 두드러지지 않았지만, 2-Level은 장애 상황에서 반복 조회를 흡수해 응답을 안정적으로 유지하는 안전망 역할을 했다.
   따라서 조회가 많고 변경이 드문 API에는 2-Level을 선택적으로 적용하고, 최신성이 중요한 API는 Fail-open 단독으로 운영하는 것이 적절하다.
+
 
 
 
