@@ -3,6 +3,12 @@
 Spring Boot 기반의 설문 관리 서비스입니다.  
 회사별로 다양한 카테고리의 질문을 설정하고, 사용자가 설문에 응답하면 이를 저장하고 통계를 확인할 수 있습니다.
 
+## 아키텍처
+
+<img width="437" height="365" alt="image" src="https://github.com/user-attachments/assets/133c5694-d8ea-4d6c-a8b8-ba85010723ae" />
+
+<br>
+
 ## 주요 기능
 
 ### ✅ 사용자 측
@@ -242,6 +248,7 @@ ssh -i xxx.pem ubuntu@대상ip 'cd ec2내 대상 경로 && docker-compose logs -
 ### 결과 - 2-Level + fail-open 적용
 - 이번 트래픽 패턴에서는 성능 차이가 두드러지지 않았지만, 2-Level은 장애 상황에서 반복 조회를 흡수해 응답을 안정적으로 유지하는 안전망 역할을 했다.
   따라서 조회가 많고 변경이 드문 API에는 2-Level을 선택적으로 적용하고, 최신성이 중요한 API는 Fail-open 단독으로 운영하는 것이 적절하다.
+
 
 
 
