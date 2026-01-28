@@ -77,7 +77,7 @@ https://letsencrypt.org/
 ```
 
 ## Spring 캐시 추상화와 Redis 캐시 저장소 
-<img width="1222" height="3460" alt="image" src="https://github.com/user-attachments/assets/b1b3f9ed-5050-4cbc-bc30-d763cac5837a" />
+<img width="1000" height="3460" alt="image" src="https://github.com/user-attachments/assets/b1b3f9ed-5050-4cbc-bc30-d763cac5837a" />
 
 
 ## Redis 용량 실험
@@ -254,6 +254,7 @@ https://letsencrypt.org/
 ### 결과 - 2-Level + fail-open 적용
 - 이번 트래픽 패턴에서는 성능 차이가 두드러지지 않았지만, 2-Level은 장애 상황에서 반복 조회를 흡수해 응답을 안정적으로 유지하는 안전망 역할을 했다.
   따라서 조회가 많고 변경이 드문 API에는 2-Level을 선택적으로 적용하고, 최신성이 중요한 API는 Fail-open 단독으로 운영하는 것이 적절하다.
+
 
 
 
