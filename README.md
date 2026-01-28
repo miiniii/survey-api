@@ -1,9 +1,7 @@
 # Survey API
-
-Spring Boot 기반의 설문 관리 서비스로, 회사별로 다양한 카테고리의 질문을 설정하고 사용자가 응답하면 이를 저장하고 통계로 확인할 수 있도록 구현했습니다.<br>
-<br>
-이 프로젝트는 단순한 CRUD 예제를 넘어서, 실제 서비스 환경에서 발생할 수 있는 문제들을 직접 경험하고 해결하기 위해 시작했으며,
-특히 배포 자동화, 캐시 확장성, 장애 대응 전략 등 운영 관점의 핵심 과제를 실험하며, 안정적이고 확장 가능한 백엔드 아키텍처를 설계하는 경험을 쌓는 것을 목표로 했습니다.
+## 개요
+- 회사별로 설문을 구성하고 응답을 저장·통계로 제공하는 Spring Boot 기반 설문 관리 서비스
+- 배포 자동화, 캐시 확장성, 장애 대응 등 운영 관점의 백엔드 아키텍처 실험
 
 ## 아키텍처
 <img width="551" height="549" alt="image" src="https://github.com/user-attachments/assets/6963a018-8724-47b8-8f3c-1f476adeaaa6" />
@@ -78,6 +76,8 @@ ssh -i xxx.pem ubuntu@대상ip 'cd ec2내 대상 경로 && docker-compose logs -
 https://letsencrypt.org/
 ```
 
+## Spring 캐시 추상화와 Redis 캐시 저장소 
+<img width="1222" height="3460" alt="image" src="https://github.com/user-attachments/assets/b1b3f9ed-5050-4cbc-bc30-d763cac5837a" />
 
 
 ## Redis 용량 실험
@@ -254,6 +254,7 @@ https://letsencrypt.org/
 ### 결과 - 2-Level + fail-open 적용
 - 이번 트래픽 패턴에서는 성능 차이가 두드러지지 않았지만, 2-Level은 장애 상황에서 반복 조회를 흡수해 응답을 안정적으로 유지하는 안전망 역할을 했다.
   따라서 조회가 많고 변경이 드문 API에는 2-Level을 선택적으로 적용하고, 최신성이 중요한 API는 Fail-open 단독으로 운영하는 것이 적절하다.
+
 
 
 
