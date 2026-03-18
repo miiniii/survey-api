@@ -45,7 +45,7 @@
 ## DB ERD
 <img width="3364" height="2756" alt="image" src="https://github.com/user-attachments/assets/f50b210b-28ec-4ba8-a663-5676f5b5df4e" />
 
-## 배포 자동화
+## 1. 배포 자동화
 - 로컬에서 빌드한 JAR를 EC2로 전송 후 재기동까지 한 번에 수행
 - 배포 스크립트
 ```
@@ -66,7 +66,7 @@ ssh -i xxx.pem ubuntu@대상ip 'cd ec2내 대상 경로 && docker-compose logs -
 ```
 - 기존에는 3~5분 소요됐지만 배포 자동화 후 1분 미만으로 걸려 배포 속도가 약 4배 향상
 
-## 도메인 & DNS 연동
+## 2. 도메인 & DNS 연동
 - 도메인 : mysurvey.fun(구매처:Hostinger)
 - DNS 관리 : AWS Route53(Hostinger의 Nameserver를 Route53으로 교체)
 - 목적 : mysurvey.fun -> API 서버(EC2)라우팅, HTTPS 적용
@@ -76,7 +76,7 @@ ssh -i xxx.pem ubuntu@대상ip 'cd ec2내 대상 경로 && docker-compose logs -
 https://letsencrypt.org/
 ```
 
-## Spring 캐시 추상화와 Redis 캐시 저장소 
+## 3. Spring 캐시 추상화와 Redis 캐시 저장소 
 <img width="1000" height="3460" alt="image" src="https://github.com/user-attachments/assets/b1b3f9ed-5050-4cbc-bc30-d763cac5837a" />
 
 
@@ -129,7 +129,7 @@ https://letsencrypt.org/
 
 <br>
 
-### 운영 안전선 계산
+### 운영 안전성 계산
 - Redis 모니터링 값 : used_memory_human(95MB), DBSIZE(410,000 = 키 개수)
 - 단위 변환
 ```
