@@ -80,13 +80,13 @@ https://letsencrypt.org/
 <img width="1000" height="3460" alt="image" src="https://github.com/user-attachments/assets/b1b3f9ed-5050-4cbc-bc30-d763cac5837a" />
 
 
-## Redis 용량 실험
+## 4. Redis 용량 실험
 - 문제 : 회사 수 증가에 따라 캐시 키가 기하급수적으로 늘어나면, Redis 메모리 한도 초과 시 키 퇴출(eviction) 발생
 - 목표<br>
 1)Hash vs String 저장 구조의 메모리 효율 비교<br>
 2)100MB 환경에서 안전하게 저장 가능한 키 수와 퇴출 임계치 확인<br>
 
-### 저장 구조 (String vs Hash)
+### 4-1. 저장 구조 (String vs Hash)
 - **String(JSON)**: DTO 전체를 직렬화해 저장 → 단순/편리하지만 **부분 갱신/부분 조회에 불리**
 - **Hash(Map)**: 필드 단위 저장(HSET/HGETALL) → **카운터/부분 갱신 유리**, Medis에서 **테이블 형태**로 확인 가능
 <p align="center">
