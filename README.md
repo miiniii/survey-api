@@ -129,7 +129,7 @@ https://letsencrypt.org/
 
 <br>
 
-### 4-2. 운영 안전성 계산
+### 4-2. 운영 안전선 계산
 - Redis 모니터링 값 : used_memory_human(95MB), DBSIZE(410,000 = 키 개수)
 - 단위 변환
 ```
